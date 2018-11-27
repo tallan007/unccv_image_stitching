@@ -2,7 +2,7 @@ import matplotlib.pyplot as plt
 import cv2
 import time
 
-def loadVideoFrames(file, max_frames=-1, frame_skip=1, resize=False):
+def loadVideoFrames(file, max_frames=-1, frame_skip=1, resize=False, gray=False):
     cap = cv2.VideoCapture(file)
     start = time.time()
     frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -17,8 +17,11 @@ def loadVideoFrames(file, max_frames=-1, frame_skip=1, resize=False):
                 frame = cv2.resize(frame, resize)
             frame = cv2.transpose(frame)
             frame = cv2.flip(frame, 1)
-            frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            frame = frame / 255
+            if gray:
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
+            else:
+                frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
+            #frame = frame / 255
             frame_data.append(frame)
         
         count = count + 1
