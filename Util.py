@@ -11,8 +11,8 @@ def loadVideoFrames(file, max_frames=-1, frame_skip=1, resize=False, gray=False)
     frame_data = []
     count = 0
     while cap.isOpened():
+        ret, frame = cap.read()
         if count % frame_skip == 0:
-            ret, frame = cap.read()
             if resize:
                 frame = cv2.resize(frame, resize)
             frame = cv2.transpose(frame)
