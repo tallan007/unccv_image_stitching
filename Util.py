@@ -1,8 +1,9 @@
 import matplotlib.pyplot as plt
 import cv2
 import time
+import numpy as np
 
-def loadVideoFrames(file, max_frames=-1, frame_skip=1, resize=False, gray=False):
+def loadVideoFrames(file, max_frames=-1, frame_skip=1, resize=False, gray=False, normal=True, datatype=False):
     cap = cv2.VideoCapture(file)
     start = time.time()
     frames = int(cap.get(cv2.CAP_PROP_FRAME_COUNT))
@@ -21,7 +22,10 @@ def loadVideoFrames(file, max_frames=-1, frame_skip=1, resize=False, gray=False)
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2GRAY)
             else:
                 frame = cv2.cvtColor(frame, cv2.COLOR_BGR2RGB)
-            #frame = frame / 255
+            if datatype:
+                frame = frame.astype(datatype)
+            if normal:
+                frame = frame / 255
             frame_data.append(frame)
         
         count = count + 1
@@ -48,3 +52,4 @@ def showPredictions(model, X, figsize=(8,8)):
     for i in range(length):
         fig.add_subplot(1,length * 2,length + i + 1)
         plt.imshow(prediction[i])
+        
