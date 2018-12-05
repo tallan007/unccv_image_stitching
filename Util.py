@@ -53,3 +53,40 @@ def showPredictions(model, X, figsize=(8,8)):
         fig.add_subplot(1,length * 2,length + i + 1)
         plt.imshow(prediction[i])
         
+class BaseFeatureExtractor:
+    def __init__(self):
+        pass
+    def extractFeatures(self, image):
+        #Returns a list of key points and descriptors
+        pass
+        
+
+class BaseHomographyGenerator:
+    def __init__(self):
+        pass
+    def findHomography(kp1, desc1, kp2, desc2):
+        #Returns a Homography
+        pass
+    
+class SIFTFeatureExtractor(BaseFeatureExtractor):
+    def __init__(self):
+        self.sift = cv2.xfeatures2d.SIFT_create()
+    def extractFeatures(self, image):
+        return self.sift.detectAndCompute(image, None)
+    
+class BFMatcherHomographyGenerator(BaseHomographyGenerator):
+    def __init__(self):
+        self.matcher = cv2.BFMatcher()
+        pass
+    def findHomography(self, kp1, desc1, kp2, desc2):
+        matches =  self.matcher.knnMatch(desc1, desc2, k=2)
+        good = []
+        for m in matches:
+            if m[0].distance < 0.5 * m[1].distance:
+                good.append(m)
+        matches = np.asarray(good)
+        src = np.float32([ kp1[m.queryIdx].pt for m in matches[:,0] ]).reshape(-1,1,2)
+        dst = np.float32([ kp2[m.trainIdx].pt for m in matches[:,0] ]).reshape(-1,1,2)
+        H, masked = cv2.findHomography(src, dst, cv2.RANSAC, 5.0)
+        return H
+        
