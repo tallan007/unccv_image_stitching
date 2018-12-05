@@ -1,13 +1,29 @@
-# unccv_image_stitching
+# Video Stabilization
 Git repository for our final project in computer vision at UNCC.
 
+# What this does
+![alt text](./images/putin0.gif)
+![alt text](./images/putin1.gif)
+![alt text](./images/putin2.gif)
 
-#Dependencies
+The leftmost video is our ground truth, the middle is the video after stabilization, and the rightmost is the video after buffered stabilization. 
 
-Anaconda
 
-Tensorflow (preferably gpu)
+![alt text](./images/Diagram1.png)
+![alt text](./images/Diagram2.png)
 
-Keras
 
-Theano (Optional)
+
+
+# Running
+Open in Jupyter Notebook
+
+Documented Notebooks:
+* StabilizationCam
+* BufferedStabilizationCam
+
+# Dependencies
+* Anaconda
+* OpenCV
+* Tensorfloat (Optional)
+* Keras (Optional)
